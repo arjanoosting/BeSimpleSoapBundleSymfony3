@@ -27,7 +27,7 @@
         "ass/xmlsecurity": "~1.0",
         "symfony/twig-bundle": "*",
         "symfony/framework-bundle": "^4.1",
-        "zendframework/zend-mime": "2.1.*"
+        "laminas/laminas-mime": "~2.9"
     },
     "suggest": {
         "besimple/soap-client": "0.2.*",
