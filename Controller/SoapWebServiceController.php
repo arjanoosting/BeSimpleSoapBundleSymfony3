@@ -16,8 +16,8 @@ use BeSimple\SoapBundle\Handler\ExceptionHandler;
 use BeSimple\SoapBundle\Soap\SoapRequest;
 use BeSimple\SoapBundle\Soap\SoapResponse;
 use BeSimple\SoapServer\SoapServerBuilder;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use BeSimple\SoapBundle\WebServiceContext;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\FlattenException;
@@ -30,9 +30,8 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
  * @author Christian Kerl <christian-kerl@web.de>
  * @author Francis Besset <francis.besset@gmail.com>
  */
-class SoapWebServiceController extends Controller
+class SoapWebServiceController extends AbstractController
 {
-    use ContainerAwareTrait;
     /**
      * @var \SoapServer
      */
@@ -57,6 +56,13 @@ class SoapWebServiceController extends Controller
      * @var array
      */
     private $headers = array();
+
+    private $contexts = array();
+
+    public function addWebServiceContext(string $id, WebServiceContext $context)
+    {
+        $this->contexts[$id] = $context;
+    }
 
     /**
      * @return \BeSimple\SoapBundle\Soap\SoapResponse
@@ -244,10 +250,18 @@ class SoapWebServiceController extends Controller
     {
         $context = sprintf('besimple.soap.context.%s', $webservice);
 
-        if (!$this->container->has($context)) {
+        if (!array_key_exists($context, $this->contexts)) {
             throw new NotFoundHttpException(sprintf('No WebService with name "%s" found.', $webservice));
         }
 
-        return $this->container->get($context);
+        return $this->contexts[$context];
+    }
+
+    public static function getSubscribedServices()
+    {
+        return array_merge(parent::getSubscribedServices(), [
+            'kernel' => \Symfony\Component\HttpKernel\KernelInterface::class,
+            // does not work 'besimple.soap.response' => SoapResponse::class,
+        ]);
     }
 }

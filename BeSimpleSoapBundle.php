@@ -11,6 +11,7 @@
 namespace BeSimple\SoapBundle;
 
 use BeSimple\SoapBundle\DependencyInjection\Compiler\WebServiceResolverPass;
+use BeSimple\SoapBundle\DependencyInjection\Compiler\WebServiceContextPass;
 use BeSimple\SoapBundle\DependencyInjection\Compiler\TypeConverterPass;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
@@ -28,6 +29,7 @@ class BeSimpleSoapBundle extends Bundle
         parent::build($container);
 
         $container->addCompilerPass(new WebServiceResolverPass());
+        $container->addCompilerPass(new WebServiceContextPass());
         $container->addCompilerPass(new TypeConverterPass());
     }
 }

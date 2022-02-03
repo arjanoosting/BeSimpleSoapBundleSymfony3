@@ -97,6 +97,12 @@
                 <argument>xsd:dateTime</argument>
             </call>
         </service>
+        <service id="BeSimple\SoapBundle\Controller\SoapWebServiceController"
+            class="BeSimple\SoapBundle\Controller\SoapWebServiceController" public="true">
+            <tag name="container.service_subscriber" />
+            <call method="setContainer">
+                <argument type="service" id="Psr\Container\ContainerInterface" />
+            </call>
+        </service>
     </services>
-
 </container>
