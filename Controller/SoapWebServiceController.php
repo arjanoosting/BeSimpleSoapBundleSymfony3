@@ -59,6 +59,11 @@ class SoapWebServiceController extends AbstractController
 
     private $contexts = array();
 
+    public function __construct(SoapResponse $response)
+    {
+	$this->soapResponse = $response;
+    }
+
     public function addWebServiceContext(string $id, WebServiceContext $context)
     {
         $this->contexts[$id] = $context;
@@ -225,7 +230,7 @@ class SoapWebServiceController extends AbstractController
      */
     protected function getResponse()
     {
-        return $this->soapResponse ?: $this->soapResponse = $this->container->get('besimple.soap.response');
+        return $this->soapResponse;
     }
 
     /**
