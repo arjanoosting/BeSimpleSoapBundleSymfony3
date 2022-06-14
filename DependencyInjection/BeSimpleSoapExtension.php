@@ -46,10 +46,9 @@ class BeSimpleSoapExtension extends Extension
         $loader->load('converters.xml');
         $loader->load('webservice.xml');
 
-        $processor     = new Processor();
         $configuration = new Configuration();
 
-        $config = $processor->process($configuration->getConfigTree(), $configs);
+        $config = $this->processConfiguration($configuration, $configs);
 
         $this->registerCacheConfiguration($config['cache'], $container, $loader);
 
